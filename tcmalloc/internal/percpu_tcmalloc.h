@@ -20,6 +20,17 @@
 #else
 #include <sys/param.h>
 #endif
+
+#ifndef EXEC_PAGESIZE
+#  ifdef PAGE_SIZE
+#    define EXEC_PAGESIZE PAGE_SIZE
+#  elif defined(PAGESIZE)
+#    define EXEC_PAGESIZE PAGESIZE
+#  else
+#    define EXEC_PAGESIZE 4096  // Fallback: standard x86-64 page size
+#  endif
+#endif
+
 #include <sys/mman.h>
 
 #include <algorithm>

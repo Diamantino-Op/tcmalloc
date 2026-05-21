@@ -1,0 +1,47 @@
+# platforms/BUILD.bazel
+package(default_visibility = ["//visibility:public"])
+
+load("@rules_cc//cc:defs.bzl", "cc_toolchain")
+load(":cc_config.bzl", "horizonos_cc_config")
+
+# 1. Your target platform
+platform(
+    name = "horizonos",
+    constraint_values = [
+        "@platforms//os:none",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+# 2. Invoke our custom config rule
+horizonos_cc_config(
+    name = "horizonos_cc_config",
+)
+
+filegroup(name = "empty")
+
+# 3. Associate the configuration with the toolchain object
+cc_toolchain(
+    name = "horizonos_cc_toolchain",
+    all_files = ":empty",
+    compiler_files = ":empty",
+    dwp_files = ":empty",
+    linker_files = ":empty",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":horizonos_cc_config",
+    toolchain_identifier = "horizonos-compiler",
+)
+
+# 4. Tie it to toolchain resolution constraints
+toolchain(
+    name = "horizonos_cc_toolchain_registration",
+    exec_compatible_with = [], # Empty list makes it matching on ANY host OS/CPU machine
+    target_compatible_with = [
+        "@platforms//os:none",
+        "@platforms//cpu:x86_64",
+    ],
+    toolchain = ":horizonos_cc_toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)

@@ -32,7 +32,7 @@ GOOGLE_MALLOC_SECTION_BEGIN
 namespace tcmalloc {
 namespace tcmalloc_internal {
 
-#if __linux__
+#if __linux__ || defined(__horizonos__)
 // Parse a CPU list in the format used by
 // /sys/devices/system/node/nodeX/cpulist files - that is, individual CPU
 // numbers or ranges in the format <start>-<end> inclusive all joined by comma
