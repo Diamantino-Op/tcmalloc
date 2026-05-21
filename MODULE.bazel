@@ -23,7 +23,7 @@ local_repository = use_repo_rule("@bazel_tools//tools/build_defs/repo:local.bzl"
 
 local_repository(
     name = "com_google_absl",
-    path = "/home/diamantino/Projects/horizonos/libs/abseil-cpp",
+    path = "abseil-cpp",
 )
 
 #bazel_dep(name = "abseil-cpp", version = "20260107.0", repo_name = "com_google_absl")

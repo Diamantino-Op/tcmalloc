@@ -19,7 +19,9 @@ all_link_actions = [
 ]
 
 def _impl(ctx):
-# Setup custom flags as an enabled feature structure
+    sysroot_path = ctx.var.get("HORIZON_SYSROOT", "sysroot")
+    toolchain_path = ctx.var.get("HORIZON_TOOLCHAIN", "toolchain")
+
     default_flags_feature = feature(
         name = "horizonos_default_flags",
         enabled = True,
@@ -58,20 +60,20 @@ def _impl(ctx):
         target_libc = "unknown",
         compiler = "clang",
         cxx_builtin_include_directories = [
-            "/home/diamantino/Projects/horizonos/toolchain",
-            "/home/diamantino/Projects/horizonos/libs/sysroot",
+            toolchain_path,
+            sysroot_path,
         ],
         features = [default_flags_feature],
         tool_paths = [
-            tool_path(name = "gcc", path = "/home/diamantino/Projects/horizonos/toolchain/bin/clang"),
-            tool_path(name = "cpp", path = "/home/diamantino/Projects/horizonos/toolchain/bin/clang++"),
-            tool_path(name = "ar", path = "/home/diamantino/Projects/horizonos/toolchain/bin/llvm-ar"),
-            tool_path(name = "nm", path = "/home/diamantino/Projects/horizonos/toolchain/bin/llvm-nm"),
-            tool_path(name = "ld", path = "/home/diamantino/Projects/horizonos/toolchain/bin/ld.lld"),
-            tool_path(name = "strip", path = "/home/diamantino/Projects/horizonos/toolchain/bin/llvm-strip"),
-            tool_path(name = "objdump", path = "/home/diamantino/Projects/horizonos/toolchain/bin/llvm-objdump"),
-            tool_path(name = "objcopy", path = "/home/diamantino/Projects/horizonos/toolchain/bin/llvm-objcopy"),
-            tool_path(name = "as", path = "/home/diamantino/Projects/horizonos/toolchain/bin/clang"),
+            tool_path(name = "gcc", path = toolchain_path + "/bin/clang"),
+            tool_path(name = "cpp", path = toolchain_path + "/bin/clang++"),
+            tool_path(name = "ar", path = toolchain_path + "/bin/llvm-ar"),
+            tool_path(name = "nm", path = toolchain_path + "/bin/llvm-nm"),
+            tool_path(name = "ld", path = toolchain_path + "/bin/ld.lld"),
+            tool_path(name = "strip", path = toolchain_path + "/bin/llvm-strip"),
+            tool_path(name = "objdump", path = toolchain_path + "/bin/llvm-objdump"),
+            tool_path(name = "objcopy", path = toolchain_path + "/bin/llvm-objcopy"),
+            tool_path(name = "as", path = toolchain_path + "/bin/clang"),
             tool_path(name = "gcov", path = "/usr/bin/gcov"),
         ],
     )
