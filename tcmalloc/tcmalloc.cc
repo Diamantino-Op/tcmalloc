@@ -140,7 +140,7 @@
 #error "Unsupported platform."
 #endif
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(__horizonos__)
 #error "Unsupported platform."
 #endif
 

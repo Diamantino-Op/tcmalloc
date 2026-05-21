@@ -15,7 +15,14 @@
 #include "tcmalloc/internal/pageflags.h"
 
 #include <fcntl.h>
-#include <linux/kernel-page-flags.h>
+#if defined(__linux__)
+#  include <linux/kernel-page-flags.h>
+#else
+// UAPI kernel-page-flags constants (from include/uapi/linux/kernel-page-flags.h)
+#  ifndef KPF_UNEVICTABLE
+#    define KPF_UNEVICTABLE 18
+#  endif
+#endif
 #include <stddef.h>
 #include <unistd.h>
 

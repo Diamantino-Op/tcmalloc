@@ -14,13 +14,13 @@
 
 #include "tcmalloc/internal/system_allocator.h"
 
-#include <asm/unistd.h>
+#include <unistd.h>
 #include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <sys/mman.h>
 #include <sys/prctl.h>
-#include <sys/syscall.h>
+#include <horizonos/syscall.h>
 #include <unistd.h>
 
 #include <algorithm>

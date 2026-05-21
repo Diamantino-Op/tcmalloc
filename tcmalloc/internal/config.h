@@ -22,7 +22,7 @@
 
 // TCMALLOC_HAVE_SCHED_GETCPU is defined when the system implements
 // sched_getcpu(3) as by glibc and it's imitators.
-#if defined(__linux__) || defined(__ros__)
+#if defined(__linux__) || defined(__ros__) || defined(__horizonos__)
 #define TCMALLOC_HAVE_SCHED_GETCPU 1
 #else
 #undef TCMALLOC_HAVE_SCHED_GETCPU
@@ -62,7 +62,7 @@
 // code to google_malloc section.  We separate the google_malloc_data /
 // google_malloc_bss sections to group the metadata together and prevent
 // it from being in .lbss, which is an otherwise cold section.
-#if defined(__clang__) && defined(__linux__)
+#if defined(__clang__) && defined(__linux__) || defined(__horizonos__)
 #define GOOGLE_MALLOC_SECTION_BEGIN                          \
   _Pragma("clang section text = \"google_malloc\"")          \
       _Pragma("clang section data = \"google_malloc_data\"") \
@@ -112,7 +112,7 @@
 #endif
 #endif
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(__horizonos__)
 #error "TCMalloc is only supported on Linux."
 #endif
 

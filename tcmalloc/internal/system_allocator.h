@@ -18,7 +18,7 @@
 #ifndef TCMALLOC_INTERNAL_SYSTEM_ALLOCATOR_H_
 #define TCMALLOC_INTERNAL_SYSTEM_ALLOCATOR_H_
 
-#include <asm/unistd.h>
+#include <unistd.h>
 
 #include <cstring>
 #include <optional>
@@ -32,7 +32,7 @@
 #include <stddef.h>
 #include <sys/mman.h>
 #include <sys/prctl.h>
-#include <sys/syscall.h>
+#include <horizonos/syscall.h>
 #include <unistd.h>
 
 #include "absl/base/attributes.h"
@@ -705,6 +705,7 @@ void SystemAllocator<Topology, NormalPartitions>::BindMemory(
     return;
   }
 
+#if defined(__linux__)
   const uint64_t nodemask = topology_.GetPartitionNodes(partition);
   int err =
       syscall(__NR_mbind, base, size, MPOL_BIND | MPOL_F_STATIC_NODES,
@@ -722,6 +723,10 @@ void SystemAllocator<Topology, NormalPartitions>::BindMemory(
   TC_ASSERT_EQ(bind_mode, NumaBindMode::kStrict);
   TC_BUG("Unable to mbind memory (errno=%d, base=%p, nodemask=%v)", errno, base,
          nodemask);
+#else
+  // mbind not supported on this platform; NUMA binding is a no-op.
+  (void)base; (void)size; (void)partition;
+#endif
 }
 
 template <typename Topology, size_t NormalPartitions>
