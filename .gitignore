@@ -1,4 +1,8 @@
 # Bazel
-bazel-*
+bazel-out
+bazel-bin
+bazel-tcmalloc
+bazel-testlogs
+abseil-cpp
 MODULE.bazel.lock
 out
